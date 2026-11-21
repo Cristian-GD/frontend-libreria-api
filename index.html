@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Librería</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-content">
+      <h1>Catálogo de Librería</h1>
+      <span class="api-badge">API Conectada</span>
+    </div>
+  </header>
+
+  <main class="container layout">
+    <aside class="sidebar">
+      <div class="card">
+        <h2>Registrar Nuevo Libro</h2>
+        <form id="libroForm">
+          <div class="form-group">
+            <label for="tituloInput">Título</label>
+            <input
+              type="text"
+              id="tituloInput"
+              placeholder="Ej. Cien años de soledad"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="autorInput">Autor</label>
+            <input
+              type="text"
+              id="autorInput"
+              placeholder="Ej. Gabriel García Márquez"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="generoInput">Género</label>
+            <select id="generoInput" required>
+              <option value="" disabled selected>Selecciona un género</option>
+              <option value="Novela">Novela</option>
+              <option value="Ciencia Ficción">Ciencia Ficción</option>
+              <option value="Fantasía">Fantasía</option>
+              <option value="Historia">Historia</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Ensayo">Ensayo</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="anioInput">Año</label>
+              <input
+                type="number"
+                id="anioInput"
+                min="1450"
+                max="2026"
+                placeholder="1967"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="paginasInput">Páginas</label>
+              <input
+                type="number"
+                id="paginasInput"
+                min="1"
+                placeholder="471"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="disponibleInput" checked />
+            <label for="disponibleInput">Disponible para préstamo</label>
+          </div>
+
+          <button type="submit" class="btn-primary btn-full">
+            + Guardar Libro
+          </button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Panel derecho: Filtros y cuadrícula de libros -->
+    <section class="content">
+      <div class="toolbar">
+        <div class="search-controls">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar por título o autor..."
+          />
+          <select id="disponibilidadFilter">
+            <option value="">Todos los estados</option>
+            <option value="true">Solo disponibles</option>
+            <option value="false">Solo prestados</option>
+          </select>
+        </div>
+
+        <div class="filter-tabs">
+          <button type="button" class="filter-btn active" data-genero="">Todos</button>
+          <button type="button" class="filter-btn" data-genero="Novela">Novela</button>
+          <button type="button" class="filter-btn" data-genero="Ciencia Ficción">Ciencia Ficción</button>
+          <button type="button" class="filter-btn" data-genero="Fantasía">Fantasía</button>
+          <button type="button" class="filter-btn" data-genero="Historia">Historia</button>
+          <button type="button" class="filter-btn" data-genero="Tecnología">Tecnología</button>
+          <button type="button" class="filter-btn" data-genero="Ensayo">Ensayo</button>
+        </div>
+      </div>
+
+      <div id="librosGrid" class="libros-grid">
+        <p class="empty-msg">Cargando catálogo...</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
