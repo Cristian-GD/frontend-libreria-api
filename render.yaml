@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: tienda-pc-frontend
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
