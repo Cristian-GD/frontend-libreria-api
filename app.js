@@ -29,19 +29,25 @@ async function parseResponse(res) {
   }
 }
 
+// Actualiza visualmente la etiqueta superior de estado de conexión
+function setApiConnected(isConnected) {
+  if (!apiStatus) return;
+  if (isConnected) {
+    apiStatus.textContent = 'API Conectada';
+    apiStatus.classList.remove('error');
+  } else {
+    apiStatus.textContent = 'Sin conexión con la API';
+    apiStatus.classList.add('error');
+  }
+}
+
 // --- VERIFICAR SALUD DEL SERVIDOR (GET /health) ---
 async function checkHealth() {
   try {
     const res = await fetch(`${BASE_HOST}/health`);
-    if (res.ok) {
-      apiStatus.textContent = 'API Conectada';
-      apiStatus.classList.remove('error');
-    } else {
-      throw new Error('Health check falló');
-    }
+    setApiConnected(res.ok);
   } catch {
-    apiStatus.textContent = 'Sin conexión con la API';
-    apiStatus.classList.add('error');
+    setApiConnected(false);
   }
 }
 
@@ -62,9 +68,12 @@ async function loadLibros(overrides = {}) {
     const data = await parseResponse(res);
 
     if (!res.ok) {
+      setApiConnected(false);
       librosGrid.innerHTML = `<p class="empty-msg">${data?.message || 'Error al consultar libros.'}</p>`;
       return;
     }
+
+    setApiConnected(true);
 
     if (!Array.isArray(data) || data.length === 0) {
       librosGrid.innerHTML = '<p class="empty-msg">No hay libros registrados con esos filtros.</p>';
@@ -129,6 +138,7 @@ async function loadLibros(overrides = {}) {
       .join('');
   } catch (error) {
     console.error('Error al cargar libros:', error);
+    setApiConnected(false);
     librosGrid.innerHTML =
       '<p class="empty-msg">No se pudo conectar con la API en Render. Si estaba inactiva, espera unos segundos y recarga la página.</p>';
   }
@@ -162,6 +172,7 @@ libroForm.addEventListener('submit', async (e) => {
     const data = await parseResponse(res);
 
     if (res.ok) {
+      setApiConnected(true);
       resetFormMode();
       await loadLibros();
     } else {
@@ -169,6 +180,7 @@ libroForm.addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error(`Error en ${method} /libro:`, error);
+    setApiConnected(false);
     alert('Error de red al comunicarse con el servidor.');
   } finally {
     submitBtn.disabled = false;
