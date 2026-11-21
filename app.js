@@ -1,10 +1,4 @@
-// Detecta automáticamente si estás en localhost:3000 o en Render.
-// Si abres el HTML directamente con doble clic (file://), usa Render como respaldo.
-const BASE_HOST =
-  window.location.protocol.startsWith('http')
-    ? window.location.origin
-    : 'https://libreria-api-1ybu.onrender.com';
-
+const BASE_HOST = 'https://libreria-api-1ybu.onrender.com';
 const API_URL = `${BASE_HOST}/api/v1`;
 
 let currentFilter = {
@@ -40,13 +34,13 @@ async function checkHealth() {
   try {
     const res = await fetch(`${BASE_HOST}/health`);
     if (res.ok) {
-      apiStatus.textContent = `Conectado (${BASE_HOST})`;
+      apiStatus.textContent = 'API Conectada';
       apiStatus.classList.remove('error');
     } else {
       throw new Error('Health check falló');
     }
   } catch {
-    apiStatus.textContent = 'Sin conexión con el servidor';
+    apiStatus.textContent = 'Sin conexión con la API';
     apiStatus.classList.add('error');
   }
 }
@@ -136,7 +130,7 @@ async function loadLibros(overrides = {}) {
   } catch (error) {
     console.error('Error al cargar libros:', error);
     librosGrid.innerHTML =
-      '<p class="empty-msg">No se pudo conectar con la API. Verifica que el servidor esté encendido.</p>';
+      '<p class="empty-msg">No se pudo conectar con la API en Render. Si estaba inactiva, espera unos segundos y recarga la página.</p>';
   }
 }
 
